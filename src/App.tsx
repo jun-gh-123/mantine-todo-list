@@ -78,9 +78,9 @@ export default function () {
         <AppShell.Main>
           <Container>
             <Title order={1}>Mantine Todo List</Title>
-            <Divider my="sm" />
+            <Divider my="sm" size="sm" />
             <NewTask addNewTask={addNewTask} />
-            <Divider my="sm" />
+            <Divider my="sm" size="sm" />
             <TaskList
               list={taskList}
               updateTask={updateTask}

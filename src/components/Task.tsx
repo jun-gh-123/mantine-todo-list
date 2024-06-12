@@ -1,5 +1,13 @@
-import React from "react";
-import { Checkbox, CloseButton, Group, Text } from "@mantine/core";
+import React, { useState } from "react";
+import {
+  useMantineTheme,
+  Button,
+  Checkbox,
+  CloseButton,
+  Group,
+  Popover,
+  Text,
+} from "@mantine/core";
 import { DateTime as LuxonDateTime } from "luxon";
 
 export type TaskType = {
@@ -16,13 +24,54 @@ export default (props: {
 }) => {
   const { task, updateTask, deleteTask } = props;
 
+  const [showDeletePopover, setShowDeletePopover] = useState(false);
+
+  const theme = useMantineTheme();
+
   const ldt = LuxonDateTime.fromMillis(task.createdAt);
 
   const textDecoration = task.completed ? "line-through" : "";
 
+  const defaultStyle = {
+    border: `1px solid ${theme.colors.gray[2]}`,
+    borderRadius: 5,
+    padding: 5,
+  };
+
+  const styleOverride = showDeletePopover
+    ? { ...defaultStyle, background: theme.colors.yellow[2] }
+    : defaultStyle;
+
   return (
-    <Group>
-      <CloseButton onClick={() => deleteTask(task.uuid)} />
+    <Group style={styleOverride}>
+      <Popover
+        position="left"
+        withArrow
+        shadow="md"
+        opened={showDeletePopover}
+        onChange={setShowDeletePopover}
+      >
+        <Popover.Target>
+          <CloseButton
+            onClick={() => setShowDeletePopover(!showDeletePopover)}
+          />
+        </Popover.Target>
+        <Popover.Dropdown>
+          <Text>Delete task?</Text>
+          <Group justify="flex-end" gap="xs">
+            <Button
+              variant="default"
+              size="compact-xs"
+              onClick={() => setShowDeletePopover(false)}
+            >
+              No
+            </Button>
+            <Button size="compact-xs" onClick={() => deleteTask(task.uuid)}>
+              Yes
+            </Button>
+          </Group>
+        </Popover.Dropdown>
+      </Popover>
       <Checkbox
         checked={task.completed}
         onChange={() => {

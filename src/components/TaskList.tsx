@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 
 import Task, { TaskType } from "./Task";
 
@@ -15,7 +15,7 @@ export default (props: {
   }
 
   return (
-    <div>
+    <Stack gap="xs">
       {list.map((t) => (
         <Task
           key={t.uuid}
@@ -24,6 +24,6 @@ export default (props: {
           deleteTask={deleteTask}
         />
       ))}
-    </div>
+    </Stack>
   );
 };
