@@ -1,0 +1,10 @@
+node_modules/
+
+# vim backup files
+*.swp
+*.swo
+
+# Local Netlify folder
+.netlify
+
+www/app.*

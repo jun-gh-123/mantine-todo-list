@@ -1,0 +1,30 @@
+{
+  "name": "esbuild-react-template",
+  "version": "1.0.0",
+  "main": "esbuild.js",
+  "scripts": {
+    "start": "concurrently \"npm:serve\" \"npm:typecheck-watch\"",
+    "serve": "node ./esbuild --serve --watch",
+    "build": "npm-run-all typecheck-build esbuild",
+    "esbuild": "node ./esbuild.js",
+    "typecheck-build": "tsc --noEmit",
+    "typecheck-watch": "tsc --noEmit --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/css-modules": "^1.0.5",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.21.5",
+    "esbuild-sass-plugin": "^3.3.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
