@@ -7,6 +7,9 @@ export default (props: { addNewTask: (value: string) => void }) => {
   const [text, setText] = useState("");
 
   const onAdd = () => {
+    if (!text) {
+      return;
+    }
     addNewTask(text);
     setText("");
   };
@@ -18,6 +21,11 @@ export default (props: { addNewTask: (value: string) => void }) => {
         placeholder="Build a house"
         value={text}
         onChange={(e) => setText(e.currentTarget.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onAdd();
+          }
+        }}
       />
       <Button onClick={onAdd}>Add</Button>
     </Group>
