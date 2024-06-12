@@ -40,7 +40,7 @@ async function main() {
 
   if (args.includes("--serve")) {
     const { host, port } = await context.serve({ servedir: "www" });
-    console.log(`Serving app at ${host}:${port}`);
+    console.log(`Serving app at http://${host}:${port}`);
   }
 }
 
