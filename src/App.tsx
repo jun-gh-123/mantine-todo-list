@@ -10,7 +10,11 @@ import {
   Divider,
   Group,
   ActionIcon,
+  Tooltip,
+  Button,
+  Modal,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconTrash, IconBrandGithub } from "@tabler/icons-react";
 
 import { TaskType } from "./components/Task";
@@ -39,6 +43,7 @@ function getDefaultTasks() {
 }
 
 export default function () {
+  const [opened, { open, close }] = useDisclosure(false);
   const [setupState, setSetupState] = useState(SetupState.Preload);
   const [tasks, setTasks] = useState<{
     [uuid: string]: TaskType;
@@ -117,10 +122,11 @@ export default function () {
     window.open("https://github.com", "_blank");
   };
 
-  const onTrashClick = () => {
+  const onResetData = () => {
     localStorage.clear();
     setTasks(getDefaultTasks());
     setSetupState(SetupState.Loaded);
+    close();
   };
 
   if (setupState !== SetupState.Ready) {
@@ -129,22 +135,36 @@ export default function () {
 
   return (
     <MantineProvider>
+      <Modal opened={opened} onClose={close} title="Reset Data?">
+        <Group justify="flex-end">
+          <Button variant="default" onClick={close}>
+            No
+          </Button>
+          <Button color="red" onClick={onResetData}>
+            Yes
+          </Button>
+        </Group>
+      </Modal>
       <AppShell header={{ height: 110 }} padding="md">
         <AppShell.Header>
           <Container style={{ paddingTop: 10 }}>
             <Group justify="space-between" style={{ paddingBottom: 5 }}>
               <Title order={1}>Mantine Todo List</Title>
               <Group>
-                <ActionIcon
-                  variant="filled"
-                  color="black"
-                  onClick={onGithubClick}
-                >
-                  <IconBrandGithub />
-                </ActionIcon>
-                <ActionIcon variant="filled" color="red" onClick={onTrashClick}>
-                  <IconTrash />
-                </ActionIcon>
+                <Tooltip label="github repo">
+                  <ActionIcon
+                    variant="filled"
+                    color="black"
+                    onClick={onGithubClick}
+                  >
+                    <IconBrandGithub />
+                  </ActionIcon>
+                </Tooltip>
+                <Tooltip label="Reset data">
+                  <ActionIcon variant="filled" color="red" onClick={open}>
+                    <IconTrash />
+                  </ActionIcon>
+                </Tooltip>
               </Group>
             </Group>
             <NewTask addNewTask={addNewTask} />
