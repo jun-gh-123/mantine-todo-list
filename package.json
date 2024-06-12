@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "esbuild.js",
   "scripts": {
-    "start": "concurrently \"npm:serve\" \"npm:typecheck-watch\"",
-    "serve": "node ./esbuild --serve --watch",
+    "start": "concurrently -r \"npm:serve\" \"npm:typecheck-watch\"",
+    "serve": "node ./esbuild.mjs --serve --watch",
     "build": "npm-run-all typecheck-build esbuild",
-    "esbuild": "node ./esbuild.js",
+    "esbuild": "node ./esbuild",
     "typecheck-build": "tsc --noEmit",
     "typecheck-watch": "tsc --noEmit --watch"
   },
@@ -31,6 +31,7 @@
   "dependencies": {
     "@mantine/core": "^7.10.1",
     "@mantine/hooks": "^7.10.1",
+    "@tabler/icons-react": "^3.5.0",
     "luxon": "^3.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

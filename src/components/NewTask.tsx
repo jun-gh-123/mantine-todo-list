@@ -16,7 +16,7 @@ export default (props: { addNewTask: (value: string) => void }) => {
 
   return (
     <Group>
-      <Title order={4}>New Task</Title>
+      <Title order={4}>Create New Task</Title>
       <TextInput
         placeholder="Build a house"
         value={text}

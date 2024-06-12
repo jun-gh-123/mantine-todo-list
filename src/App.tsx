@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -8,7 +8,10 @@ import {
   AppShell,
   Container,
   Divider,
+  Group,
+  ActionIcon,
 } from "@mantine/core";
+import { IconTrash, IconBrandGithub } from "@tabler/icons-react";
 
 import { TaskType } from "./components/Task";
 import NewTask from "./components/NewTask";
@@ -16,19 +19,57 @@ import TaskList from "./components/TaskList";
 
 import "@mantine/core/styles.css";
 
-const exampleTaskUUID = uuidv4();
+enum SetupState {
+  Preload = 1,
+  Loaded,
+  Ready,
+}
 
-export default function () {
-  const [tasks, setTasks] = useState<{
-    [uuid: string]: TaskType;
-  }>({
+function getDefaultTasks() {
+  const exampleTaskUUID = uuidv4();
+
+  return {
     [exampleTaskUUID]: {
       uuid: exampleTaskUUID,
       createdAt: Date.now(),
-      name: "Add a new task.",
+      name: "Create a new task.",
       completed: false,
     },
-  });
+  };
+}
+
+export default function () {
+  const [setupState, setSetupState] = useState(SetupState.Preload);
+  const [tasks, setTasks] = useState<{
+    [uuid: string]: TaskType;
+  }>(getDefaultTasks());
+
+  useEffect(() => {
+    const data = localStorage.getItem("todos");
+
+    if (data) {
+      setTasks(JSON.parse(data));
+    }
+
+    setSetupState(SetupState.Loaded);
+  }, []);
+
+  useEffect(() => {
+    if (setupState !== SetupState.Ready) {
+      return;
+    }
+    writeToFile();
+  }, [tasks]);
+
+  useEffect(() => {
+    if (setupState === SetupState.Loaded) {
+      setSetupState(SetupState.Ready);
+    }
+  }, [setupState]);
+
+  const writeToFile = () => {
+    localStorage.setItem("todos", JSON.stringify(tasks));
+  };
 
   const taskList = useMemo(() => {
     const list = [];
@@ -72,15 +113,45 @@ export default function () {
     });
   };
 
+  const onGithubClick = () => {
+    window.open("https://github.com", "_blank");
+  };
+
+  const onTrashClick = () => {
+    localStorage.clear();
+    setTasks(getDefaultTasks());
+    setSetupState(SetupState.Loaded);
+  };
+
+  if (setupState !== SetupState.Ready) {
+    return;
+  }
+
   return (
     <MantineProvider>
-      <AppShell padding="md">
+      <AppShell header={{ height: 110 }} padding="md">
+        <AppShell.Header>
+          <Container style={{ paddingTop: 10 }}>
+            <Group justify="space-between" style={{ paddingBottom: 5 }}>
+              <Title order={1}>Mantine Todo List</Title>
+              <Group>
+                <ActionIcon
+                  variant="filled"
+                  color="black"
+                  onClick={onGithubClick}
+                >
+                  <IconBrandGithub />
+                </ActionIcon>
+                <ActionIcon variant="filled" color="red" onClick={onTrashClick}>
+                  <IconTrash />
+                </ActionIcon>
+              </Group>
+            </Group>
+            <NewTask addNewTask={addNewTask} />
+          </Container>
+        </AppShell.Header>
         <AppShell.Main>
           <Container>
-            <Title order={1}>Mantine Todo List</Title>
-            <Divider my="sm" size="sm" />
-            <NewTask addNewTask={addNewTask} />
-            <Divider my="sm" size="sm" />
             <TaskList
               list={taskList}
               updateTask={updateTask}

@@ -39,7 +39,7 @@ export default (props: {
   };
 
   const styleOverride = showDeletePopover
-    ? { ...defaultStyle, background: theme.colors.yellow[2] }
+    ? { ...defaultStyle, background: theme.colors.yellow[1] }
     : defaultStyle;
 
   return (
@@ -61,12 +61,16 @@ export default (props: {
           <Group justify="flex-end" gap="xs">
             <Button
               variant="default"
-              size="compact-xs"
+              size="compact-sm"
               onClick={() => setShowDeletePopover(false)}
             >
               No
             </Button>
-            <Button size="compact-xs" onClick={() => deleteTask(task.uuid)}>
+            <Button
+              size="compact-sm"
+              onClick={() => deleteTask(task.uuid)}
+              color="red"
+            >
               Yes
             </Button>
           </Group>
