@@ -13,6 +13,9 @@ import {
   Tooltip,
   Button,
   Modal,
+  Text,
+  Stack,
+  Anchor,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconTrash, IconBrandGithub } from "@tabler/icons-react";
@@ -145,11 +148,25 @@ export default function () {
           </Button>
         </Group>
       </Modal>
-      <AppShell header={{ height: 110 }} padding="md">
+      <AppShell header={{ height: 130 }} padding="md">
         <AppShell.Header>
-          <Container style={{ paddingTop: 10 }}>
-            <Group justify="space-between" style={{ paddingBottom: 5 }}>
-              <Title order={1}>Mantine Todo List</Title>
+          <Container style={{ paddingTop: 25 }}>
+            <Group
+              justify="space-between"
+              align="flex-start"
+              style={{ paddingBottom: 10 }}
+            >
+              <Stack gap="xs">
+                <Title order={1} style={{ lineHeight: 0.3 }}>
+                  Mantine Todo List
+                </Title>
+                <Text c="gray" fw="500">
+                  Todo List App made using{" "}
+                  <Anchor href="https://mantine.dev" target="_blank">
+                    Mantine UI Library
+                  </Anchor>
+                </Text>
+              </Stack>
               <Group>
                 <Tooltip label="github repo">
                   <ActionIcon
