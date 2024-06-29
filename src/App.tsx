@@ -122,7 +122,7 @@ export default function () {
   };
 
   const onGithubClick = () => {
-    window.open("https://github.com", "_blank");
+    window.open("https://github.com/jun-gh-123/mantine-todo-list", "_blank");
   };
 
   const onResetData = () => {
