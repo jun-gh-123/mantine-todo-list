@@ -53,31 +53,14 @@ export default function () {
   }>(getDefaultTasks());
 
   useEffect(() => {
-    const data = localStorage.getItem("todos");
-
-    if (data) {
-      setTasks(JSON.parse(data));
-    }
-
     setSetupState(SetupState.Loaded);
   }, []);
-
-  useEffect(() => {
-    if (setupState !== SetupState.Ready) {
-      return;
-    }
-    writeToFile();
-  }, [tasks]);
 
   useEffect(() => {
     if (setupState === SetupState.Loaded) {
       setSetupState(SetupState.Ready);
     }
   }, [setupState]);
-
-  const writeToFile = () => {
-    localStorage.setItem("todos", JSON.stringify(tasks));
-  };
 
   const taskList = useMemo(() => {
     const list = [];
@@ -126,7 +109,6 @@ export default function () {
   };
 
   const onResetData = () => {
-    localStorage.clear();
     setTasks(getDefaultTasks());
     setSetupState(SetupState.Loaded);
     close();
